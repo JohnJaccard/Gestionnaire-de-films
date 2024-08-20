@@ -1,12 +1,12 @@
-import customtkinter as ctk
+from customtkinter import *
 from tkinter import messagebox
 
 # Initialisation de l'application
-ctk.set_appearance_mode("dark")  # Modes: "System" (default), "Dark", "Light"
-ctk.set_default_color_theme("blue")  # Themes: "blue" (default), "dark-blue", "green"
+set_appearance_mode("dark")  # Modes: "System" (default), "Dark", "Light"
+set_default_color_theme("blue")  # Themes: "blue" (default), "dark-blue", "green"
 
 # Création de la fenêtre principale
-root = ctk.CTk()
+root = CTk()
 root.title("Liste de Films")
 root.geometry("400x500")
 
@@ -17,16 +17,16 @@ def show_film_info(film_id):
 
 # Liste des films avec des IDs
 films = {
-    1: "Inception",
-    2: "The Matrix",
-    3: "Interstellar",
-    4: "The Dark Knight",
-    5: "Pulp Fiction"
+    1: "Action",
+    2: "Horreur",
+    3: "Comédies",
+    4: "Science-fiction",
+    5: "Romances"
 }
 
 # Création de boutons pour chaque film dans la liste
 for film_id, film_name in films.items():
-    button = ctk.CTkButton(root, text=film_name, command=lambda fid=film_id: show_film_info(fid))
+    button = CTkButton(root, text=film_name, command=lambda fid=film_id: show_film_info(fid))
     button.pack(pady=10, padx=20, fill="x")
 
 # Lancement de l'application
