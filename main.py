@@ -17,8 +17,10 @@ root.geometry("800x700")
 # paramètres des boutons de l'accueil
 button_width = 100
 button_height = 60
+# paramètres des boutons des films
 film_btn_height = 100
 film_btn_width = 100
+# variables pour le tri par catégorie
 f_cat = 0
 
 #images
@@ -31,7 +33,7 @@ categories = {
     2: "Séries TV"
 }
 
-# Liste des films
+# Liste des catégories de films
 films_categories = {
     1: "Action",
     2: "Horreur",
@@ -40,6 +42,7 @@ films_categories = {
     5: "Romances"
 }
 
+# liste des films manuelle en attendant la DB
 films = [
     ["Spiderman 1", 1],
     ["Spiderman 2", 4]
@@ -54,28 +57,29 @@ films_btn = []
 # fonctions
 def display_films_from_category(category_id):
     global films,films_btn
+    # liste des films à afficher
     films_to_diplay = []
+    # liste des boutons des films à afficher
     films_btn =[]
+    # position y de chaque bouton relative
     y_position = 0.8
 
+    # boucle qui va ajouter le film si la catégorie correspond à celle cliquée
     for film in range(len(films)):
         f_cat = films[film][1]
         if f_cat == category_id:
             films_to_diplay.append(films[film])
+    # vérif si il y a des films à afficher
     if len(films_to_diplay) > 0:
         films_categories_frame.place_forget()
         for btn in film_buttons:
             btn.destroy()
 
+        # Afficher les boutons des films de la catégorie sélectionnée
         for film in films_to_diplay:
             film_btn = CTkLabel(root, text=film[0],height=film_btn_height, width=film_btn_width,    corner_radius=20, fg_color=["#92140C", "#92140C"])
             film_btn.place(relx=0.5, rely=y_position, anchor=CENTER)
             films_btn.append(film_btn)
-
-
-
-
-
 
 # Fonction pour revenir à l'écran principal
 def back_to_main_menu():
@@ -107,14 +111,13 @@ def display_film_buttons():
     # Affiche les boutons pour les films depuis le bas
     global film_buttons
     film_buttons = []
-    films_categories_frame.place(relx=0.354,rely=0.55)
-    y_position = 0.95
+    # placement de la frame pour avoir les éléments scrollables
+    films_categories_frame.place(relx=0.353,rely=0.55)
     for filmc_id, filmc_name in films_categories.items():
         film_button = CTkButton(films_categories_frame, text=filmc_name, width=200, height=40,
                                 command=lambda fid=filmc_id: display_films_from_category(fid))
         film_button.pack(pady=10)
         film_buttons.append(film_button)
-        y_position -= 0.1  # Place chaque bouton un peu plus haut que le précédent
 
 # Fonction pour afficher un message avec la catégorie sélectionnée
 def show_categories(category_id):
@@ -123,7 +126,10 @@ def show_categories(category_id):
     elif category_id == 2:  # Si "Séries TV" est sélectionné
         messagebox.showinfo("Error", "Bientôt disponible")
 
-films_categories_frame = CTkScrollableFrame(root, fg_color="#272529",height=250,corner_radius=20)
+
+# Création des widgets
+# frames
+films_categories_frame = CTkScrollableFrame(root, fg_color="#272529", height=250, corner_radius=20)
 
 # labels
 logo_label = CTkLabel(root, image=logo, text="")
