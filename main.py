@@ -17,6 +17,9 @@ root.geometry("800x700")
 # paramètres des boutons de l'accueil
 button_width = 100
 button_height = 60
+film_btn_height = 100
+film_btn_width = 100
+f_cat = 0
 
 #images
 logo = CTkImage(light_image=Image.open('./images/netflix_logo.png'), dark_image=Image.open('./images/netflix_logo.png'), size=(150, 150))  # WidthxHeight
@@ -29,7 +32,7 @@ categories = {
 }
 
 # Liste des films
-films = {
+films_categories = {
     1: "Action",
     2: "Horreur",
     3: "Comédies",
@@ -37,15 +40,53 @@ films = {
     5: "Romances"
 }
 
+films = [
+    ["Spiderman 1", 1],
+    ["Spiderman 2", 4]
+]
+
+
+
 # Liste pour stocker les boutons des films
 film_buttons = []
+films_btn = []
 
 # fonctions
+def display_films_from_category(category_id):
+    global films,films_btn
+    films_to_diplay = []
+    films_btn =[]
+    y_position = 0.8
+
+    for film in range(len(films)):
+        f_cat = films[film][1]
+        if f_cat == category_id:
+            films_to_diplay.append(films[film])
+    if len(films_to_diplay) > 0:
+        films_categories_frame.place_forget()
+        for btn in film_buttons:
+            btn.destroy()
+
+        for film in films_to_diplay:
+            film_btn = CTkLabel(root, text=film[0],height=film_btn_height, width=film_btn_width,    corner_radius=20, fg_color=["#92140C", "#92140C"])
+            film_btn.place(relx=0.5, rely=y_position, anchor=CENTER)
+            films_btn.append(film_btn)
+
+
+
+
+
+
 # Fonction pour revenir à l'écran principal
 def back_to_main_menu():
+    global films_btn
     # Détruit les boutons des films
     for btn in film_buttons:
         btn.destroy()
+
+    for btn in films_btn:
+        btn.destroy()
+    films_categories_frame.place_forget()
 
     # Cache le bouton "Back"
     back_button.place_forget()
@@ -66,12 +107,12 @@ def display_film_buttons():
     # Affiche les boutons pour les films depuis le bas
     global film_buttons
     film_buttons = []
+    films_categories_frame.place(relx=0.354,rely=0.55)
     y_position = 0.95
-    for film_id, film_name in films.items():
-        film_button = CTkButton(root, text=film_name, width=200, height=40,
-                                command=lambda fid=film_id: messagebox.showinfo("Film sélectionné",
-                                                                                f"Vous avez sélectionné : {films[fid]} (ID: {fid})"))
-        film_button.place(relx=0.5, rely=y_position, anchor=CENTER)
+    for filmc_id, filmc_name in films_categories.items():
+        film_button = CTkButton(films_categories_frame, text=filmc_name, width=200, height=40,
+                                command=lambda fid=filmc_id: display_films_from_category(fid))
+        film_button.pack(pady=10)
         film_buttons.append(film_button)
         y_position -= 0.1  # Place chaque bouton un peu plus haut que le précédent
 
@@ -81,6 +122,8 @@ def show_categories(category_id):
         display_film_buttons()
     elif category_id == 2:  # Si "Séries TV" est sélectionné
         messagebox.showinfo("Error", "Bientôt disponible")
+
+films_categories_frame = CTkScrollableFrame(root, fg_color="#272529",height=250,corner_radius=20)
 
 # labels
 logo_label = CTkLabel(root, image=logo, text="")
