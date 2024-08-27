@@ -1,2 +1,14 @@
-C'est un gestionnaire, qui fait comme Netflix, mais sans le lecteur vidéo.
-Vous pourrez trouver des films selon des catégories,trouver où le visionner et donner votre avis après l'avoir visionner!
+# Gestionnaire de films via CustomTkinter
+## Instructions d'utilisation
+### - Installez les deux modules ci-dessous
+**CustomTkinter**
+```
+pip install customtkinter
+```
+
+**Pillow (pour les images)**
+```
+pip install pillow
+```
+### - Mettre en place la DB
+**Éxécuter le script ....sql**
