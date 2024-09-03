@@ -10,5 +10,11 @@ pip install customtkinter
 ```
 pip install pillow
 ```
+
+
+**Connecteur mysql et python (pour les images)**
+```
+pip install mysql-connector-python
+```
 ### - Mettre en place la DB
-**Éxécuter le script ....sql**
+**Éxécuter les script ....sql**

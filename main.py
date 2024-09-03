@@ -1,6 +1,7 @@
 from customtkinter import *
 from tkinter import messagebox
 from PIL import Image, ImageTk
+from mysql.connector import *
 
 # Initialisation de l'application
 set_appearance_mode("dark")  # Modes: "System" (default), "Dark", "Light"
@@ -44,8 +45,10 @@ films_categories = {
 
 # liste des films manuelle en attendant la DB
 films = [
-    ["Spiderman 1", 1],
-    ["Spiderman 2", 4]
+    ["Spiderman 1", 1, 1],
+    ["Spiderman 2", 4, 2],
+    ["Spiderman 3", 1, 3],
+    ["Spiderman 4", 4, 4]
 ]
 
 
@@ -74,12 +77,13 @@ def display_films_from_category(category_id):
         films_categories_frame.place_forget()
         for btn in film_buttons:
             btn.destroy()
-
-        # Afficher les boutons des films de la catégorie sélectionnée
+        # Affiche le bouton "Back"Afficher les boutons des films de la catégorie sélectionnée
         for film in films_to_diplay:
-            film_btn = CTkLabel(root, text=film[0],height=film_btn_height, width=film_btn_width,    corner_radius=20, fg_color=["#92140C", "#92140C"])
+
+            film_btn = CTkButton(root, text=film[0],height=film_btn_height, width=film_btn_width,command=lambda filmid=film[1]:messagebox.showinfo("info",f"id du film {filmid}") ,corner_radius=20, fg_color=["#92140C", "#92140C"])
             film_btn.place(relx=0.5, rely=y_position, anchor=CENTER)
             films_btn.append(film_btn)
+        print(films_btn)
 
 # Fonction pour revenir à l'écran principal
 def back_to_main_menu():
