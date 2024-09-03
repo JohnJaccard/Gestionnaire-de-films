@@ -2,6 +2,15 @@ from customtkinter import *
 from tkinter import messagebox
 from PIL import Image, ImageTk
 from mysql.connector import *
+from film_window import film_showed
+
+# connection à la db
+connection = connect(
+    host="localhost",
+    user="root",
+    password="Pa$$w0rd",
+    database="netfloux"
+)
 
 # Initialisation de l'application
 set_appearance_mode("dark")  # Modes: "System" (default), "Dark", "Light"
@@ -20,7 +29,7 @@ button_width = 100
 button_height = 60
 # paramètres des boutons des films
 film_btn_height = 100
-film_btn_width = 100
+film_btn_width = 150
 # variables pour le tri par catégorie
 f_cat = 0
 
@@ -34,56 +43,46 @@ categories = {
     2: "Séries TV"
 }
 
-# Liste des catégories de films
-films_categories = {
-    1: "Action",
-    2: "Horreur",
-    3: "Comédies",
-    4: "Science-fiction",
-    5: "Romances"
-}
-
-# liste des films manuelle en attendant la DB
-films = [
-    ["Spiderman 1", 1, 1],
-    ["Spiderman 2", 4, 2],
-    ["Spiderman 3", 1, 3],
-    ["Spiderman 4", 4, 4]
-]
-
-
-
 # Liste pour stocker les boutons des films
 film_buttons = []
 films_btn = []
 
 # fonctions
 def display_films_from_category(category_id):
-    global films,films_btn
+    global films_btn
     # liste des films à afficher
     films_to_diplay = []
     # liste des boutons des films à afficher
     films_btn =[]
-    # position y de chaque bouton relative
-    y_position = 0.8
+    # base du grid
+    grid_row = 1
+    grid_column = 1
 
-    # boucle qui va ajouter le film si la catégorie correspond à celle cliquée
-    for film in range(len(films)):
-        f_cat = films[film][1]
-        if f_cat == category_id:
-            films_to_diplay.append(films[film])
+    #récup info des films de la catégorie
+    cursor = connection.cursor()
+    # Requête pour récupérer le nom du film par ID
+    query = "SELECT * FROM movies WHERE category_id = %s"
+    cursor.execute(query, (category_id,))
+    films_to_diplay = cursor.fetchall()
+    # Fermeture de la connexion
+    cursor.close()
     # vérif si il y a des films à afficher
     if len(films_to_diplay) > 0:
         films_categories_frame.place_forget()
         for btn in film_buttons:
             btn.destroy()
+
+        films_frame.place(relx=0.55, rely=0.7, anchor=CENTER)
         # Affiche le bouton "Back"Afficher les boutons des films de la catégorie sélectionnée
         for film in films_to_diplay:
-
-            film_btn = CTkButton(root, text=film[0],height=film_btn_height, width=film_btn_width,command=lambda filmid=film[1]:messagebox.showinfo("info",f"id du film {filmid}") ,corner_radius=20, fg_color=["#92140C", "#92140C"])
-            film_btn.place(relx=0.5, rely=y_position, anchor=CENTER)
+            film_btn = CTkButton(films_frame, text=('\n'.join([(film[1])[i:i+20] for i in range(0, len((film[1])), 10)])),height=film_btn_height, width=film_btn_width,command=lambda filmid=film[0]:film_showed(filmid) ,corner_radius=20, fg_color=["#92140C", "#92140C"])
+            # Positionner le bouton dans la grille
+            film_btn.grid(row=grid_row, column=grid_column, padx=10, pady=10)
             films_btn.append(film_btn)
-        print(films_btn)
+            grid_column += 1
+            if grid_column > 2:
+                grid_row += 1
+                grid_column = 1
 
 # Fonction pour revenir à l'écran principal
 def back_to_main_menu():
@@ -95,6 +94,7 @@ def back_to_main_menu():
     for btn in films_btn:
         btn.destroy()
     films_categories_frame.place_forget()
+    films_frame.place_forget()
 
     # Cache le bouton "Back"
     back_button.place_forget()
@@ -116,10 +116,18 @@ def display_film_buttons():
     global film_buttons
     film_buttons = []
     # placement de la frame pour avoir les éléments scrollables
-    films_categories_frame.place(relx=0.353,rely=0.55)
-    for filmc_id, filmc_name in films_categories.items():
-        film_button = CTkButton(films_categories_frame, text=filmc_name, width=200, height=40,
-                                command=lambda fid=filmc_id: display_films_from_category(fid))
+    films_categories_frame.place(relx=0.353,rely=0.42)
+    #récup info des catégories selectionné
+    cursor = connection.cursor()
+    # Requête pour récupérer le nom du film par ID
+    query = "SELECT * FROM categories"
+    cursor.execute(query)
+    categories = cursor.fetchall()
+    # Fermeture de la connexion
+    cursor.close()
+    for category in categories:
+        film_button = CTkButton(films_categories_frame, text=category[1], width=200, height=40,
+                                command=lambda fid=category[0]: display_films_from_category(fid))
         film_button.pack(pady=10)
         film_buttons.append(film_button)
 
@@ -134,6 +142,7 @@ def show_categories(category_id):
 # Création des widgets
 # frames
 films_categories_frame = CTkScrollableFrame(root, fg_color="#272529", height=250, corner_radius=20)
+films_frame = CTkScrollableFrame(root, bg_color="transparent", fg_color="transparent",width=400,height=350)
 
 # labels
 logo_label = CTkLabel(root, image=logo, text="")
@@ -152,7 +161,7 @@ button_series = CTkButton(root, text=categories[2], width=button_width, height=b
 
 
 #placement des objets
-logo_label.place(relx=0.5, rely=0.4, anchor=CENTER)
+logo_label.place(relx=0.5, rely=0.3, anchor=CENTER)
 button_films.place(relx=0.25, rely=0.6, anchor=CENTER)
 button_series.place(relx=0.75, rely=0.6, anchor=CENTER)
 
