@@ -1,4 +1,4 @@
-from mysql.connector import *
+from database import get_films_informations
 from customtkinter import *
 from PIL import Image, ImageTk
 
@@ -6,23 +6,9 @@ from PIL import Image, ImageTk
 set_appearance_mode("dark")  # Modes: "System" (default), "Dark", "Light"
 set_default_color_theme("./content/color_theme.json")
 
-connection = connect(
-    host="localhost",
-    user="root",   # Remplacez par votre utilisateur
-    password="Pa$$w0rd", # Remplacez par votre mot de passe
-    database="netfloux"
-)
 
 def film_showed(id):
-    #récup info du film selectionné
-    cursor = connection.cursor()
-    # Requête pour récupérer le nom du film par ID
-    query = "SELECT * FROM movies WHERE id = %s"
-    cursor.execute(query, (id,))
-    film_infos = cursor.fetchone()
-    film_name = film_infos[1]
-    # Fermeture de la connexion
-    cursor.close()
+    film_name = get_films_informations(id)
 
     # Création de la fenêtre principale
     Windowfilm = CTk()
@@ -37,5 +23,3 @@ def film_showed(id):
     # Lancement de l'application
     Windowfilm.mainloop()
 
-# Exemple d'appel de la fonction avec une ID (à adapter)
-film_showed(1)

@@ -1,16 +1,9 @@
 from customtkinter import *
 from tkinter import messagebox
 from PIL import Image, ImageTk
-from mysql.connector import *
 from film_window import film_showed
+from database import get_films_from_category,get_categories
 
-# connection à la db
-connection = connect(
-    host="localhost",
-    user="root",
-    password="Pa$$w0rd",
-    database="netfloux"
-)
 
 # Initialisation de l'application
 set_appearance_mode("dark")  # Modes: "System" (default), "Dark", "Light"
@@ -58,14 +51,8 @@ def display_films_from_category(category_id):
     grid_row = 1
     grid_column = 1
 
-    #récup info des films de la catégorie
-    cursor = connection.cursor()
-    # Requête pour récupérer le nom du film par ID
-    query = "SELECT * FROM movies WHERE category_id = %s"
-    cursor.execute(query, (category_id,))
-    films_to_diplay = cursor.fetchall()
-    # Fermeture de la connexion
-    cursor.close()
+    films_to_diplay = get_films_from_category(category_id)
+
     # vérif si il y a des films à afficher
     if len(films_to_diplay) > 0:
         films_categories_frame.place_forget()
@@ -118,13 +105,7 @@ def display_film_buttons():
     # placement de la frame pour avoir les éléments scrollables
     films_categories_frame.place(relx=0.353,rely=0.42)
     #récup info des catégories selectionné
-    cursor = connection.cursor()
-    # Requête pour récupérer le nom du film par ID
-    query = "SELECT * FROM categories"
-    cursor.execute(query)
-    categories = cursor.fetchall()
-    # Fermeture de la connexion
-    cursor.close()
+    categories = get_categories()
     for category in categories:
         film_button = CTkButton(films_categories_frame, text=category[1], width=200, height=40,
                                 command=lambda fid=category[0]: display_films_from_category(fid))
