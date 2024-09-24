@@ -1,6 +1,6 @@
 # Gestionnaire de films via CustomTkinter
 ## Instructions d'utilisation
-### - Installez les deux modules ci-dessous
+### - Installez les trois modules ci-dessous
 **CustomTkinter**
 ```
 pip install customtkinter
@@ -11,8 +11,7 @@ pip install customtkinter
 pip install pillow
 ```
 
-
-**Connecteur mysql et python (pour les images)**
+**Connecteur mysql et python**
 ```
 pip install mysql-connector-python
 ```
