@@ -1,10 +1,10 @@
 import subprocess
+# Mysql-connector
 try:
     from mysql.connector import *
-    print('connector ok')
+    print('mysql.connector already installed')
 except:
     subprocess.run('pip install mysql-connector-python', shell=True)
-
 
 # Database connection
 connection = connect(
@@ -14,9 +14,7 @@ connection = connect(
     database="netfloux"
 )
 
-
 # main.py functions
-
 def get_films_from_category(category_id):
     # Cursor creation
     cursor = connection.cursor()
@@ -40,7 +38,7 @@ def get_categories():
     cursor.close()
     return categories
 
-#film_window
+# film_window.py
 def get_films_informations(id):
     # Cursor creation
     cursor = connection.cursor()

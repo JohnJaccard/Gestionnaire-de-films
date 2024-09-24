@@ -11,7 +11,7 @@ def film_showed(id):
 
     # Main window creation
     Windowfilm = CTk()
-    Windowfilm.title("Prendre le nom du film via l'ID")
+    Windowfilm.title(film_name)
     Windowfilm.iconbitmap('images/goat.ico')
     Windowfilm.geometry("400x200")
 

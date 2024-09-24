@@ -2,18 +2,21 @@ from tkinter import messagebox
 from film_window import film_showed
 from database import get_films_from_category, get_categories
 import subprocess
-try :
+# Try to import the packages and if it fails, install it
+# Customtkinter
+try:
     from customtkinter import *
-    print('customtkinter ok')
+    print('customtkinter already installed')
 except:
     subprocess.run('pip install customtkinter', shell=True)
-try :
+    from customtkinter import *
+# Pillow
+try:
     from PIL import Image, ImageTk
-    print('PIL ok')
+    print('pillow already installed')
 except:
     subprocess.run('pip install pillow', shell=True)
-
-
+    from PIL import Image, ImageTk
 
 # Initialisation of the app
 set_appearance_mode("dark")  # Modes: "System" (default), "Dark", "Light"
@@ -37,7 +40,7 @@ film_btn_width = 150
 f_cat = 0
 
 # Images
-logo = CTkImage(light_image=Image.open('./images/netflix_logo.png'), dark_image=Image.open('./images/netflix_logo.png'), size=(150, 150))  # WidthxHeight
+logo = CTkImage(light_image=Image.open('./images/netflix_logo.png'), dark_image=Image.open('./images/netflix_logo.png'), size=(150, 150))
 fleche = CTkImage(light_image=Image.open('./images/fleche.png'), dark_image=Image.open('./images/fleche.png'), size=(50, 50))
 
 # Choose between films and series
@@ -47,7 +50,7 @@ categories = {
 }
 
 # Lists that will contain films buttons
-film_buttons = []
+categories_buttons = []
 films_btn = []
 
 # Functions
@@ -66,7 +69,7 @@ def display_films_from_category(category_id):
     if len(films_to_diplay) > 0:
         # Unplace the categories frame to make the categories buttons dissappear
         films_categories_frame.place_forget()
-        for btn in film_buttons:
+        for btn in categories_buttons:
             btn.destroy()
 
         # Place the films frame
@@ -87,7 +90,7 @@ def display_films_from_category(category_id):
 def back_to_main_menu():
     global films_btn
     # Destroy categories buttons and frame
-    for btn in film_buttons:
+    for btn in categories_buttons:
         btn.destroy()
     films_categories_frame.place_forget()
     # Destroy films buttons and frame
@@ -103,8 +106,8 @@ def back_to_main_menu():
     button_series.place(relx=0.75, rely=0.6, anchor=CENTER)
 
 # Function that will display all the categories
-def display_film_buttons():
-    global film_buttons
+def display_categories_buttons():
+    global categories_buttons
     # Unplace the films and series buttons
     button_films.place_forget()
     button_series.place_forget()
@@ -113,7 +116,7 @@ def display_film_buttons():
     back_button.place(relx=0.9, rely=0.1, anchor=CENTER)
 
     # Categories list
-    film_buttons = []
+    categories_buttons = []
     # Placement for the category's frame
     films_categories_frame.place(relx=0.353,rely=0.42)
     # Take all the categories from the database
@@ -123,12 +126,12 @@ def display_film_buttons():
         film_button = CTkButton(films_categories_frame, text=category[1], width=200, height=40,
                                 command=lambda fid=category[0]: display_films_from_category(fid))
         film_button.pack(pady=10)
-        film_buttons.append(film_button)
+        categories_buttons.append(film_button)
 
 # Function to differentiate the films and the series
 def show_categories(category_id):
     if category_id == 1:  # If films is selected
-        display_film_buttons()
+        display_categories_buttons()
     elif category_id == 2:  # if series is selected
         messagebox.showinfo("Error", "Bientôt disponible")
 
