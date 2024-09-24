@@ -45,9 +45,20 @@ def get_films_informations(id):
     # Get film infos by his id
     query = "SELECT * FROM movies WHERE id = %s"
     cursor.execute(query, (id,))
+    # Stock all the films information in a list
     film_infos = cursor.fetchone()
-    # Take the name from the infos list
-    film_name = film_infos[1]
     # Close the cursor
     cursor.close()
-    return film_name
+    return film_infos
+
+def get_category_from_id(id):
+    # Cursor creation
+    cursor = connection.cursor()
+    # Get category name by his id
+    query = "SELECT name FROM categories WHERE id = %s"
+    cursor.execute(query, (id,))
+    # Stock all the films information in a list
+    category_name = cursor.fetchone()
+    # Close the cursor
+    cursor.close()
+    return category_name
