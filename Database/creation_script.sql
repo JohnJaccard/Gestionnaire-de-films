@@ -8,11 +8,11 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
--- Schema mydb
+-- Schema netfloux
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema mydb
+-- Schema netfloux
 -- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `netfloux` DEFAULT CHARACTER SET utf8 ;
 USE `netfloux` ;
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `netfloux`.`movies` (
   `duration` TIME NOT NULL,
   `watched` TINYINT NOT NULL,
   `minimum_age` INT NOT NULL,
-  `streaming_site` VARCHAR(10) NOT NULL,
+  `streaming_site` VARCHAR(15) NOT NULL,
   `release_date` DATE NOT NULL,
   `category_id` INT NOT NULL,
   PRIMARY KEY (`id`),

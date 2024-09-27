@@ -8,8 +8,10 @@ set_default_color_theme("./content/color_theme.json")
 
 
 def film_showed(id):
+    # Get all the informations from the database in a list obtained by the function get_films_informations
     film_informations_list = get_films_informations(id)
 
+    # Separate each element from the list (and a specific format for the duration)
     name = film_informations_list[1]
     category = get_category_from_id(film_informations_list[-1])[0]
     release_date = film_informations_list[6]
@@ -18,24 +20,28 @@ def film_showed(id):
     streaming_website = film_informations_list[5]
 
     # Main window creation
-    Windowfilm = CTk()
-    Windowfilm.title(name)
-    Windowfilm.iconbitmap('images/goat.ico')
-    Windowfilm.geometry("400x200")
+    windowfilm = CTk()
+    windowfilm.title(name)
+    windowfilm.iconbitmap('images/goat.ico')
+    windowfilm.geometry("400x200")
 
-    # Film image
+    # Film image (non fonctionnel pour le moment)
     #film_image = CTkImage(light_image=Image.open('./images/netflix_logo.png'), dark_image=Image.open('./images/netflix_logo.png'), size=(150, 150))
 
-    # Label to show film's name
-    name_label = CTkLabel(Windowfilm, text=name)
-    #image_label = CTkLabel(Windowfilm, image=film_image, text="")
-    category_label = CTkLabel(Windowfilm, text=f"Genre: {category}")
-    release_date_label = CTkLabel(Windowfilm, text=f"Date de sortie: {release_date}")
-    duration_label = CTkLabel(Windowfilm, text=f"Durée: {duration}")
-    minimum_age_label = CTkLabel(Windowfilm, text=f"Age minimal : {minimum_age} ans")
-    streaming_site_label = CTkLabel(Windowfilm, text=f"Plateforme de streaming: {streaming_website}")
+
+    # (non fonctionnel pour le moment)
+    #image_label = CTkLabel(windowfilm, image=film_image, text="")
+
+    # Label for each film's element
+    name_label = CTkLabel(windowfilm, text=name)
+    category_label = CTkLabel(windowfilm, text=f"Genre: {category}")
+    release_date_label = CTkLabel(windowfilm, text=f"Date de sortie: {release_date}")
+    duration_label = CTkLabel(windowfilm, text=f"Durée: {duration}")
+    minimum_age_label = CTkLabel(windowfilm, text=f"Age minimal : {minimum_age} ans")
+    streaming_site_label = CTkLabel(windowfilm, text=f"Plateforme de streaming: {streaming_website}")
 
 
+    # Placement of all the elements in the window
     name_label.pack(pady=10,ANCHOR=CENTER)
     #image_label.pack(anchor=LEFT)
     category_label.pack()
@@ -46,5 +52,5 @@ def film_showed(id):
 
     
     # app start
-    Windowfilm.mainloop()
+    windowfilm.mainloop()
 

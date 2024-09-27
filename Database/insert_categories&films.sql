@@ -1,0 +1,36 @@
+INSERT INTO categories (name) VALUES
+('Action'),
+('Aventure'),
+('Comédie'),
+('Drame'),
+('Horreur'),
+('Science-Fiction'),
+('Fantastique'),
+('Animation'),
+('Documentaire'),
+('Romance'),
+('Thriller'),
+('Policier'),
+('Guerre'),
+('Western'),
+('Musical'),
+('Biopic'),
+('Historique'),
+('Familial'),
+('Sport'),
+('Mystère');
+
+-- Insertion de 10 films dans la table movies
+INSERT INTO movies (name, duration, watched, minimum_age, streaming_site, release_date, category_id) VALUES
+('Inception', '02:28:00', 1, 13, 'Netflix', '2010-07-16', 1),
+('The Godfather', '02:55:00', 0, 17, 'Prime Video', '1972-03-24', 2),
+('The Dark Knight', '02:32:00', 1, 13, 'HBO Max', '2008-07-18', 1),
+('Pulp Fiction', '02:34:00', 1, 17, 'Disney+', '1994-10-14', 3),
+('Schindler''s List', '03:15:00', 0, 17, 'Netflix', '1993-12-15', 4),
+('The Lord of the Rings', '03:21:00', 0, 13, 'Prime Video', '2003-12-17', 2),
+('Forrest Gump', '02:22:00', 1, 13, 'HBO Max', '1994-07-06', 3),
+('Fight Club', '02:19:00', 0, 17, 'Disney+', '1999-10-15', 1),
+('The Matrix', '02:16:00', 1, 13, 'Netflix', '1999-03-31', 5),
+('Goodfellas', '02:26:00', 0, 17, 'Prime Video', '1990-09-21', 2),
+('Matrix','02:16:00',1,12,'Netflix','1999-06-23',1),
+('Indiana Jones and the Last Crusade','02:07:00',0,11,'Disney+','1989-05-24',2);
