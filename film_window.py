@@ -26,7 +26,7 @@ def rate_film(movie_id):
     rate_window = CTkToplevel()
     rate_window.title("Rate the Film")
     rate_window.iconbitmap('images/goat.ico')
-    rate_window.geometry("400x350")
+    rate_window.geometry("400x500")
 
     # Label to prompt user to rate the film
     rate_label = CTkLabel(rate_window, text="Veuillez évaluer le film:", font=("Arial", 18))
