@@ -12,11 +12,11 @@ except:
     from customtkinter import *
 # Pillow
 try:
-    from PIL import Image, ImageTk
+    from PIL import Image
     print('pillow already installed')
 except:
     subprocess.run('pip install pillow', shell=True)
-    from PIL import Image, ImageTk
+    from PIL import Image
 
 # Initialisation of the app
 set_appearance_mode("dark")  # Modes: "System" (default), "Dark", "Light"

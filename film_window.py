@@ -1,6 +1,6 @@
-from database import get_films_informations,get_category_from_id
+from database import get_films_informations, get_category_from_id
 from customtkinter import *
-from PIL import Image, ImageTk
+from PIL import Image
 
 # Initialisation of the app
 set_appearance_mode("dark")  # Modes: "System" (default), "Dark", "Light"
@@ -26,24 +26,26 @@ def film_showed(id):
     windowfilm.geometry("400x200")
 
     # Film image (non fonctionnel pour le moment)
-    #film_image = CTkImage(light_image=Image.open('./images/netflix_logo.png'), dark_image=Image.open('./images/netflix_logo.png'), size=(150, 150))
-
+    # film_image = CTkImage(light_image=Image.open('./images/fleche.png'), dark_image=Image.open('./images/fleche.png'), size=(50, 50))
 
     # (non fonctionnel pour le moment)
-    #image_label = CTkLabel(windowfilm, image=film_image, text="")
+    # image_label = CTkLabel(windowfilm, image=film_image, text="")
 
-    # Label for each film's element
-    name_label = CTkLabel(windowfilm, text=name)
-    category_label = CTkLabel(windowfilm, text=f"Genre: {category}")
-    release_date_label = CTkLabel(windowfilm, text=f"Date de sortie: {release_date}")
-    duration_label = CTkLabel(windowfilm, text=f"Durée: {duration}")
-    minimum_age_label = CTkLabel(windowfilm, text=f"Age minimal : {minimum_age} ans")
-    streaming_site_label = CTkLabel(windowfilm, text=f"Plateforme de streaming: {streaming_website}")
+    # Label for the film name
+    name_label = CTkLabel(windowfilm, text=name, font=("Arial", 25))
+
+    # Frame that will contain all the films informations except for the name
+    infos = CTkFrame(windowfilm, bg_color="transparent", fg_color="transparent")
+    category_label = CTkLabel(infos, text=f"Genre: {category}")
+    release_date_label = CTkLabel(infos, text=f"Date de sortie: {release_date}")
+    duration_label = CTkLabel(infos, text=f"Durée: {duration}")
+    minimum_age_label = CTkLabel(infos, text=f"Age minimal : {minimum_age} ans")
+    streaming_site_label = CTkLabel(infos, text=f"Plateforme de streaming: {streaming_website}")
 
 
     # Placement of all the elements in the window
-    name_label.pack(pady=10,ANCHOR=CENTER)
-    #image_label.pack(anchor=LEFT)
+    name_label.pack(pady=10)
+    infos.pack()
     category_label.pack()
     release_date_label.pack()
     duration_label.pack()

@@ -42,6 +42,8 @@ CREATE TABLE IF NOT EXISTS `netfloux`.`movies` (
   `minimum_age` INT NOT NULL,
   `streaming_site` VARCHAR(15) NOT NULL,
   `release_date` DATE NOT NULL,
+  `description` VARCHAR(255) NOT NULL,
+  `trailer_link` VARCHAR(50) NULL,
   `category_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_movies_categories_idx` (`category_id` ASC) VISIBLE,
