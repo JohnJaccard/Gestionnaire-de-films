@@ -1,64 +1,68 @@
 import subprocess
 # Mysql-connector
 try:
-    from mysql.connector import *
+    from mysql.connector import connect
     print('mysql.connector already installed')
-except:
+except ImportError:
     subprocess.run('pip install mysql-connector-python', shell=True)
 
 # Database connection
 connection = connect(
     host="localhost",
-    user="root",
-    password="Pa$$w0rd",
+    user="root",  # Replace with your MySQL username
+    password="Pa$$w0rd",  # Replace with your MySQL password
     database="netfloux"
 )
 
-# main.py functions
+
+# Function to get films based on category_id
 def get_films_from_category(category_id):
-    # Cursor creation
     cursor = connection.cursor()
-    # Get films from category
     query = "SELECT * FROM movies WHERE category_id = %s"
     cursor.execute(query, (category_id,))
     films_to_diplay = cursor.fetchall()
-    # Close the cursor
     cursor.close()
     return films_to_diplay
 
 
+# Function to retrieve all categories
 def get_categories():
-    # Cursor creation
     cursor = connection.cursor()
-    # Get all categories
     query = "SELECT * FROM categories"
     cursor.execute(query)
     categories = cursor.fetchall()
-    # Close the cursor
     cursor.close()
     return categories
 
-# film_window.py
+
+# Function to get information about a film by its id
 def get_films_informations(id):
-    # Cursor creation
     cursor = connection.cursor()
-    # Get film infos by his id
     query = "SELECT * FROM movies WHERE id = %s"
     cursor.execute(query, (id,))
-    # Stock all the films information in a list
     film_infos = cursor.fetchone()
-    # Close the cursor
     cursor.close()
     return film_infos
 
+
+# Function to get a category name by its id
 def get_category_from_id(id):
-    # Cursor creation
     cursor = connection.cursor()
-    # Get category name by his id
     query = "SELECT name FROM categories WHERE id = %s"
     cursor.execute(query, (id,))
-    # Stock all the films information in a list
     category_name = cursor.fetchone()
-    # Close the cursor
     cursor.close()
     return category_name
+
+
+# Function to insert a comment and rating for a movie
+def insert_comment_and_rating(movie_id, comment, rating):
+    cursor = connection.cursor()
+    query = """
+    INSERT INTO commentaries (commentar, rate, movie_id)
+    VALUES (%s, %s, %s)
+    """
+    cursor.execute(query, (comment, rating, movie_id))
+    connection.commit()
+    cursor.close()
+
