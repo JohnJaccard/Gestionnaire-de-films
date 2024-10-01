@@ -62,3 +62,14 @@ def get_category_from_id(id):
     # Close the cursor
     cursor.close()
     return category_name
+
+# Function to insert a comment and rating for a movie
+def insert_comment_and_rating(movie_id, comment, rating):
+    cursor = connection.cursor()
+    query = """
+    INSERT INTO commentaries (commentar, rate, movie_id)
+    VALUES (%s, %s, %s)
+    """
+    cursor.execute(query, (comment, rating, movie_id))
+    connection.commit()
+    cursor.close()
