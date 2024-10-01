@@ -18,12 +18,14 @@ def film_showed(id):
     duration = f"{str(film_informations_list[2])[0:1]}h{str(film_informations_list[2])[2:4]}"
     minimum_age = film_informations_list[4]
     streaming_website = film_informations_list[5]
+    description = ('\n'.join([(film_informations_list[7])[i:i+25] for i in range(0, len((film_informations_list[7])), 25)]))
+    trailer_link = film_informations_list[8]
 
     # Main window creation
     windowfilm = CTk()
     windowfilm.title(name)
     windowfilm.iconbitmap('images/goat.ico')
-    windowfilm.geometry("400x200")
+    windowfilm.geometry("400x250")
 
     # Film image (non fonctionnel pour le moment)
     # film_image = CTkImage(light_image=Image.open('./images/fleche.png'), dark_image=Image.open('./images/fleche.png'), size=(50, 50))
@@ -41,6 +43,8 @@ def film_showed(id):
     duration_label = CTkLabel(infos, text=f"Durée: {duration}")
     minimum_age_label = CTkLabel(infos, text=f"Age minimal : {minimum_age} ans")
     streaming_site_label = CTkLabel(infos, text=f"Plateforme de streaming: {streaming_website}")
+    description_label = CTkLabel(infos, text=f"Description: {description}")
+    trailer_link = CTkLabel(infos, text=f"Trailer : {trailer_link}")
 
 
     # Placement of all the elements in the window
@@ -51,6 +55,8 @@ def film_showed(id):
     duration_label.pack()
     minimum_age_label.pack()
     streaming_site_label.pack()
+    description_label.pack()
+    trailer_link.pack()
 
     
     # app start
