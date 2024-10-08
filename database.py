@@ -65,3 +65,13 @@ def insert_comment_and_rating(movie_id, comment, rating):
     connection.commit()
     cursor.close()
 
+# Function to get the average rating of a movie
+def get_average_rating(movie_id):
+    cursor = connection.cursor()
+    query = "SELECT AVG(rate) FROM commentaries WHERE movie_id = %s"
+    cursor.execute(query, (movie_id,))
+    average_rating = cursor.fetchone()[0]  # Fetch the result
+    cursor.close()
+
+    # If no ratings exist, return 0
+    return average_rating if average_rating is not None else 0
