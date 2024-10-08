@@ -1,7 +1,6 @@
 from database import get_films_informations, get_category_from_id, insert_comment_and_rating,get_average_rating
 from customtkinter import *
 from PIL import Image,ImageTk
-import os
 import webview  # Ajoute un Webview pour afficher les vidéos YouTube
 
 # Initialisation de l'application
@@ -67,7 +66,7 @@ def open_video(name,url):
     webview.create_window(name, url)
     webview.start()
 
-# Fonction pour afficher les informations du film et la bande-annonce
+
 def film_showed(id):
     # Retrieve the film's information from the database
     film_informations_list = get_films_informations(id)
@@ -90,7 +89,7 @@ def film_showed(id):
     windowfilm = CTk()
     windowfilm.title(name)
     windowfilm.iconbitmap('images/goat.ico')
-    windowfilm.geometry("600x450")
+    windowfilm.geometry("800x450")
 
     # Label for the film's name
     name_label = CTkLabel(windowfilm, text=name, font=("Arial", 25))
@@ -132,4 +131,3 @@ def film_showed(id):
 
     # App start
     windowfilm.mainloop()
-

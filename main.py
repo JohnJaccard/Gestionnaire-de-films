@@ -1,3 +1,9 @@
+'''
+Netfloux
+Projet developpement
+John Jaccard & Judah Peryiasamy
+Ver 2.2
+'''
 from tkinter import messagebox
 from film_window import film_showed
 from database import get_films_from_category, get_categories
@@ -76,7 +82,7 @@ def display_films_from_category(category_id):
         films_frame.place(relx=0.55, rely=0.7, anchor=CENTER)
         # Display all the films in a grid
         for film in films_to_diplay:
-            film_btn = CTkButton(films_frame, text=('\n'.join([(film[1])[i:i+10] for i in range(0, len((film[1])), 10)])),height=film_btn_height, width=film_btn_width,command=lambda filmid=film[0]:film_showed(filmid),corner_radius=20)
+            film_btn = CTkButton(films_frame, text=('\n'.join([(film[1])[i:i+10] for i in range(0, len((film[1])), 10)])),height=film_btn_height, width=film_btn_width,command=lambda filmid=film[0]: film_showed(filmid),corner_radius=20)
             # Place the buttons in the grid
             film_btn.grid(row=grid_row, column=grid_column, padx=10, pady=10)
             films_btn.append(film_btn)
@@ -85,6 +91,7 @@ def display_films_from_category(category_id):
             if grid_column > 2:
                 grid_row += 1
                 grid_column = 1
+
 
 # Function for the "back" button to go the home page
 def back_to_main_menu():
