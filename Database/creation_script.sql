@@ -62,6 +62,7 @@ DROP TABLE IF EXISTS `netfloux`.`commentaries` ;
 
 CREATE TABLE IF NOT EXISTS `netfloux`.`commentaries` (
   `id` INT NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(30) NOT NULL,
   `commentar` VARCHAR(255) NOT NULL,
   `rate` SMALLINT(1) NOT NULL,
   `movie_id` INT NOT NULL,

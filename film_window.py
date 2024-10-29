@@ -1,24 +1,28 @@
-from database import get_films_informations, get_category_from_id, insert_comment_and_rating,get_average_rating
+from database import get_films_informations, get_category_from_id, insert_comment_and_rating,get_average_rating, get_comments_for_movie
 from customtkinter import *
+from customtkinter import CTkImage
 from PIL import Image,ImageTk
 import webview  # Ajoute un Webview pour afficher les vidéos YouTube
+from tkinter import messagebox
 
 # Initialisation de l'application
 set_appearance_mode("dark")  # Modes: "System" (default), "Dark", "Light"
 set_default_color_theme("./content/color_theme.json")
 
-def submit_rating(movie_id, selected_rating, comment_box, rating_label, comment_label):
+def submit_rating(movie_id, selected_rating, username, comment_box, rating_label, comment_label):
     # Retrieve the comment and the rating
     comment = comment_box.get("0.0", "end").strip()  # Get the comment text
     rating = selected_rating.get()
+    username = username.get()
+    if  username != "":
+        # Insert the comment and rating into the database
+        insert_comment_and_rating(movie_id, username, comment, rating)
 
-    # Insert the comment and rating into the database
-    insert_comment_and_rating(movie_id, comment, rating)
-
-    # Update the rating and comment labels
-    rating_label.configure(text=f"Votre note: {rating} étoiles")
-    comment_label.configure(text=f"Votre commentaire: {comment}" if comment else "Aucun commentaire laissé")
-
+        # Update the rating and comment labels
+        rating_label.configure(text=f"Votre note: {rating} étoiles")
+        comment_label.configure(text=f"Votre commentaire: {comment}" if comment else "Aucun commentaire laissé")
+    else:
+        messagebox.showerror("Erreur", "Veuillez entrer votre nom d'utilisateur")
 
 def rate_film(movie_id):
     # Create a new window for rating
@@ -26,6 +30,9 @@ def rate_film(movie_id):
     rate_window.title("Rate the Film")
     rate_window.iconbitmap('images/goat.ico')
     rate_window.geometry("400x500")
+
+    #variable de texte pour le username
+    username = StringVar()
 
     # Label to prompt user to rate the film
     rate_label = CTkLabel(rate_window, text="Veuillez évaluer le film:", font=("Arial", 18))
@@ -37,15 +44,15 @@ def rate_film(movie_id):
     # Create radio buttons for rating from 1 to 5
     rating_frame = CTkFrame(rate_window, fg_color="transparent")
     rating_frame.pack()
-    star_image = ImageTk.PhotoImage(Image.open("./images/star.png").resize((20, 20)))  # Resize the image to 10x10 pixels
+    star_image = CTkImage(Image.open("./images/star.png").resize((20, 20)))  # Resize the image to 20x20 pixels
     selected_rating = IntVar()
     for i in range(1, 6):
         label_frame = CTkFrame(rating_frame, fg_color="transparent")
         label_frame.pack(side=LEFT)
 
-        rating_button = CTkButton(label_frame,fg_color="transparent",text="", border_width=0, image=star_image, width=20, height=20, command=lambda value=i: selected_rating.set(value))
+        rating_button = CTkButton(label_frame, fg_color="transparent", text="", border_width=0, image=star_image, width=20, height=20, command=lambda value=i: selected_rating.set(value))
         rating_button.pack(anchor=CENTER)
-
+    E_username = CTkEntry(rate_window,width=250,height=10,placeholder_text="Username",textvariable=username).pack()
     comment_box = CTkTextbox(rate_window, width=300, height=100)
     comment_box.pack(pady=5)
 
@@ -57,9 +64,30 @@ def rate_film(movie_id):
     comment_display_label.pack()
 
     # Submit button to submit the rating and comment
-    submit_button = CTkButton(rate_window, text="Soumettre", command=lambda: submit_rating(movie_id, selected_rating, comment_box, rating_label, comment_display_label))
+    submit_button = CTkButton(rate_window, text="Soumettre", command=lambda: submit_rating(movie_id, selected_rating, username, comment_box, rating_label, comment_display_label))
     submit_button.pack()
 
+def show_comments_window(movie_id):
+    # Create a new window to display comments
+    comments_window = CTkToplevel()
+    comments_window.title("Comments")
+    comments_window.geometry("400x500")
+    # Retrieve comments from the database
+    comments = get_comments_for_movie(movie_id)
+    # Check if there are comments
+    if comments:
+        for comment, rate in comments:
+            comment_frame = CTkFrame(comments_window, fg_color="transparent")
+            comment_frame.pack(pady=5, padx=10, fill="x")
+            # Display each comment and its rating
+            comment_label = CTkLabel(comment_frame, text=f"Comment: {comment}", anchor="w")
+            rating_label = CTkLabel(comment_frame, text=f"Rating: {rate} stars", anchor="w")
+            comment_label.pack(anchor="w")
+            rating_label.pack(anchor="w")
+    else:
+        # If no comments are found
+        no_comments_label = CTkLabel(comments_window, text="Pas encore de commentaire.")
+        no_comments_label.pack(pady=20)
 
 def open_video(name,url):
     # Open a web interface in youtube to watch the trailer
@@ -71,15 +99,14 @@ def film_showed(id):
     # Retrieve the film's information from the database
     film_informations_list = get_films_informations(id)
 
-    # Extract the details of the film
+    # Extract film details
     name = film_informations_list[1]
     category = get_category_from_id(film_informations_list[-1])[0]
     release_date = film_informations_list[6]
     duration = f"{str(film_informations_list[2])[0:1]}h{str(film_informations_list[2])[2:4]}"
     minimum_age = film_informations_list[4]
     streaming_website = film_informations_list[5]
-    description = (
-        '\n'.join([(film_informations_list[7])[i:i + 25] for i in range(0, len((film_informations_list[7])), 25)]))
+    description = '\n'.join([(film_informations_list[7])[i:i + 25] for i in range(0, len((film_informations_list[7])), 25)])
     trailer_link = film_informations_list[8]
 
     # Get the average rating for the film
@@ -91,7 +118,7 @@ def film_showed(id):
     windowfilm.iconbitmap('images/goat.ico')
     windowfilm.geometry("800x450")
 
-    # Label for the film's name
+    # Display film information
     name_label = CTkLabel(windowfilm, text=name, font=("Arial", 25))
 
     # Frame containing the film's information
@@ -103,13 +130,13 @@ def film_showed(id):
     streaming_site_label = CTkLabel(infos, text=f"Streaming platform: {streaming_website}")
     description_label = CTkLabel(infos, text=f"Description: {description}")
 
-    # Label for average rating
+    # Average rating label
     if average_rating is not None:
-        average_rating_label = CTkLabel(infos, text=f"Average rating: {average_rating} stars")
+        average_rating_label = CTkLabel(infos, text=f"Average rating: {average_rating:.1f} stars")
     else:
         average_rating_label = CTkLabel(infos, text="No ratings yet")
 
-    # Arrange the information in the window
+    # Arrange information labels
     name_label.pack(pady=10)
     infos.pack(pady=5)
     category_label.pack()
@@ -118,16 +145,18 @@ def film_showed(id):
     minimum_age_label.pack()
     streaming_site_label.pack()
     description_label.pack()
-    average_rating_label.pack(pady=5)  # Add the average rating label
+    average_rating_label.pack(pady=5) 
 
-    # Button to watch the trailer
-    if trailer_link:  # Check if there is a trailer link
+    # Trailer button
+    if trailer_link:
         play_button = CTkButton(windowfilm, text="Watch the trailer", command=lambda: open_video(name, trailer_link))
         play_button.pack(pady=20)
 
-    # "Rate" button
+    # Rate button
     rate_button = CTkButton(windowfilm, text="Rate", command=lambda: rate_film(id))
-    rate_button.pack(pady=20)  # Place the "Rate" button below the film information
-
+    rate_button.pack(pady=10)
+    # Comments button
+    comments_button = CTkButton(windowfilm, text="Comments", command=lambda: show_comments_window(id))
+    comments_button.pack(pady=10)
     # App start
     windowfilm.mainloop()

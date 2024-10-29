@@ -46,7 +46,7 @@ film_btn_width = 150
 f_cat = 0
 
 # Images
-logo = CTkImage(light_image=Image.open('./images/netflix_logo.png'), dark_image=Image.open('./images/netflix_logo.png'), size=(150, 150))
+logo = CTkImage(light_image=Image.open('./images/netflix_logo.png'), dark_image=Image.open('./images/netflix_logo.png'), size=(250, 250))
 fleche = CTkImage(light_image=Image.open('./images/fleche.png'), dark_image=Image.open('./images/fleche.png'), size=(50, 50))
 
 # Choose between films and series
@@ -165,7 +165,7 @@ button_series = CTkButton(root, text=categories[2], width=button_width, height=b
 
 
 # Placement
-logo_label.place(relx=0.5, rely=0.3, anchor=CENTER)
+logo_label.place(relx=0.5, rely=0.25, anchor=CENTER)
 button_films.place(relx=0.25, rely=0.6, anchor=CENTER)
 button_series.place(relx=0.75, rely=0.6, anchor=CENTER)
 

@@ -55,13 +55,13 @@ def get_category_from_id(id):
     return category_name
 
 # Function to insert a comment and rating for a movie
-def insert_comment_and_rating(movie_id, comment, rating):
+def insert_comment_and_rating(movie_id, username, comment, rating):
     cursor = connection.cursor()
     query = """
-    INSERT INTO commentaries (commentar, rate, movie_id)
-    VALUES (%s, %s, %s)
+    INSERT INTO commentaries (commentar,username, rate, movie_id)
+    VALUES (%s, %s, %s, %s)
     """
-    cursor.execute(query, (comment, rating, movie_id))
+    cursor.execute(query, (comment,username, rating, movie_id))
     connection.commit()
     cursor.close()
 
@@ -75,3 +75,12 @@ def get_average_rating(movie_id):
 
     # If no ratings exist, return 0
     return average_rating if average_rating is not None else 0
+
+# Function to get all comments for a specific movie
+def get_comments_for_movie(movie_id):
+    cursor = connection.cursor()
+    query = "SELECT commentar, rate FROM commentaries WHERE movie_id = %s"
+    cursor.execute(query, (movie_id,))
+    comments = cursor.fetchall()
+    cursor.close()
+    return comments
