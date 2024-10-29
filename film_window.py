@@ -74,6 +74,10 @@ def show_comments_window(movie_id):
     comments_window.title("Comments")
     comments_window.geometry("450x500")
 
+    # Scrollable frame for the comments
+    scrollable_frame = CTkScrollableFrame(comments_window, width=400, height=450,bg_color="transparent", fg_color="transparent")
+    scrollable_frame.pack(pady=10, padx=10, fill="both", expand=True)
+
     # Retrieve comments from the database
     comments = get_comments_for_movie(movie_id)
 
@@ -81,7 +85,7 @@ def show_comments_window(movie_id):
     if comments:
         for username, comment, rate in comments:
             # Frame for each comment with padding around it
-            comment_frame = CTkFrame(comments_window, fg_color="gray25", corner_radius=10)
+            comment_frame = CTkFrame(scrollable_frame, fg_color="gray25", corner_radius=10)
             comment_frame.pack(pady=10, padx=15, fill="x", anchor="w")
 
             # Display the username in bold
@@ -103,7 +107,7 @@ def show_comments_window(movie_id):
             rating_label.pack(anchor="w", padx=10, pady=(0, 8))
     else:
         # Message if no comments are available
-        no_comments_label = CTkLabel(comments_window, text="No comments yet.", font=("Arial", 13))
+        no_comments_label = CTkLabel(scrollable_frame, text="No comments yet.", font=("Arial", 13))
         no_comments_label.pack(pady=20)
 
 
