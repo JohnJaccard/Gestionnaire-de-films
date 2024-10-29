@@ -24,3 +24,9 @@ pip install mysql-connector-python
 Nous avons utilisé MySQLWorkBench et HeidiSQL comme clients
 
 **Version mysql 8.0**
+---
+- /!\ Si vous avez un problème avec le package Webview. Voici la commande pour l'installer:
+    ```
+    pip install pywebview
+    ```
+ 

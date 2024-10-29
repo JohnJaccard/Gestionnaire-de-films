@@ -52,7 +52,7 @@ def rate_film(movie_id):
 
         rating_button = CTkButton(label_frame, fg_color="transparent", text="", border_width=0, image=star_image, width=20, height=20, command=lambda value=i: selected_rating.set(value))
         rating_button.pack(anchor=CENTER)
-    E_username = CTkEntry(rate_window,width=250,height=10,placeholder_text="Username",textvariable=username).pack()
+    E_username = CTkEntry(rate_window,width=250,height=10, placeholder_text="Username", textvariable=username).pack()
     comment_box = CTkTextbox(rate_window, width=300, height=100)
     comment_box.pack(pady=5)
 
