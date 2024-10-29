@@ -79,7 +79,7 @@ def get_average_rating(movie_id):
 # Function to get all comments for a specific movie
 def get_comments_for_movie(movie_id):
     cursor = connection.cursor()
-    query = "SELECT commentar, rate FROM commentaries WHERE movie_id = %s"
+    query = "SELECT username, commentar, rate FROM commentaries WHERE movie_id = %s"
     cursor.execute(query, (movie_id,))
     comments = cursor.fetchall()
     cursor.close()

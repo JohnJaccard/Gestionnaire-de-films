@@ -67,27 +67,45 @@ def rate_film(movie_id):
     submit_button = CTkButton(rate_window, text="Soumettre", command=lambda: submit_rating(movie_id, selected_rating, username, comment_box, rating_label, comment_display_label))
     submit_button.pack()
 
+
 def show_comments_window(movie_id):
     # Create a new window to display comments
     comments_window = CTkToplevel()
     comments_window.title("Comments")
-    comments_window.geometry("400x500")
+    comments_window.geometry("450x500")
+
     # Retrieve comments from the database
     comments = get_comments_for_movie(movie_id)
+
     # Check if there are comments
     if comments:
-        for comment, rate in comments:
-            comment_frame = CTkFrame(comments_window, fg_color="transparent")
-            comment_frame.pack(pady=5, padx=10, fill="x")
-            # Display each comment and its rating
-            comment_label = CTkLabel(comment_frame, text=f"Comment: {comment}", anchor="w")
-            rating_label = CTkLabel(comment_frame, text=f"Rating: {rate} stars", anchor="w")
-            comment_label.pack(anchor="w")
-            rating_label.pack(anchor="w")
+        for username, comment, rate in comments:
+            # Frame for each comment with padding around it
+            comment_frame = CTkFrame(comments_window, fg_color="gray25", corner_radius=10)
+            comment_frame.pack(pady=10, padx=15, fill="x", anchor="w")
+
+            # Display the username in bold
+            username_label = CTkLabel(
+                comment_frame, text=f"👤 {username}", font=("Arial", 12, "bold"), anchor="w", text_color="cyan"
+            )
+            username_label.pack(anchor="w", padx=10, pady=(8, 2))
+
+            # Display the comment text
+            comment_label = CTkLabel(
+                comment_frame, text=f"📝 {comment}", font=("Arial", 11), anchor="w", wraplength=380
+            )
+            comment_label.pack(anchor="w", padx=10, pady=(2, 5))
+
+            # Display the rating with a star icon
+            rating_label = CTkLabel(
+                comment_frame, text=f"⭐ Rating: {rate} / 5", font=("Arial", 11, "bold"), anchor="w", text_color="gold"
+            )
+            rating_label.pack(anchor="w", padx=10, pady=(0, 8))
     else:
-        # If no comments are found
-        no_comments_label = CTkLabel(comments_window, text="Pas encore de commentaire.")
+        # Message if no comments are available
+        no_comments_label = CTkLabel(comments_window, text="No comments yet.", font=("Arial", 13))
         no_comments_label.pack(pady=20)
+
 
 def open_video(name,url):
     # Open a web interface in youtube to watch the trailer
